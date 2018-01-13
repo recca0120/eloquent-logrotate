@@ -1,0 +1,43 @@
+{
+    "name": "recca0120/eloquent-log-rotate",
+    "description": "",
+    "keywords": ["laravel", "eloquent", "model", "logrotate", "rotate", "log"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "recca0120",
+            "email": "recca0120@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/database": "^5.1"
+    },
+    "require-dev": {
+        "mockery/mockery": "~0.9.4",
+        "phpunit/phpunit": "~4.8|~5.4|~6.1",
+        "nesbot/carbon": "~1.20"
+    },
+    "autoload": {
+        "psr-4": {
+            "Recca0120\\EloquentLogRotate\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Recca0120\\EloquentLogRotate\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Recca0120\\LaravelTracy\\LaravelTracyServiceProvider"
+            ]
+        }
+    }
+}
