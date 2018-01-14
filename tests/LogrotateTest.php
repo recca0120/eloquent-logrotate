@@ -84,9 +84,9 @@ class YearlyLog extends Model
 {
     use Logrotate;
 
-    protected $logrotate = 'yearly';
+    protected $logrotateType = 'yearly';
 
-    protected function createLogrotateTable($table)
+    protected function logrotateTableSchema($table)
     {
         $table->increments('id');
         $table->string('name');
@@ -100,9 +100,9 @@ class MonthlyLog extends Model
 {
     use Logrotate;
 
-    protected $logrotate = 'monthly';
+    protected $logrotateType = 'monthly';
 
-    protected function createLogrotateTable($table)
+    protected function logrotateTableSchema($table)
     {
         $table->increments('id');
         $table->string('name');
@@ -116,9 +116,9 @@ class DailyLog extends Model
 {
     use Logrotate;
 
-    protected $logrotate = 'daily';
+    protected $logrotateType = 'daily';
 
-    protected function createLogrotateTable($table)
+    protected function logrotateTableSchema($table)
     {
         $table->increments('id');
         $table->string('name');

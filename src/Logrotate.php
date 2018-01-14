@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Blueprint;
 
 trait Logrotate
 {
-    protected $logRotate = 'monthly';
+    protected $logrotateType = 'monthly';
 
     /**
      * Get the table associated with the model.
@@ -17,7 +17,7 @@ trait Logrotate
      */
     public function getTable()
     {
-        return $this->getLogRotateTable(parent::getTable());
+        return $this->getLogrotateTable(parent::getTable());
     }
 
     /**
@@ -26,23 +26,23 @@ trait Logrotate
      * @param string $table
      * @return string
      */
-    protected function getLogRotateTable($table)
+    protected function getLogrotateTable($table)
     {
-        $logRotateTable = $table.'_'.Carbon::now()->format(Arr::get([
+        $logrotateTable = $table.'_'.Carbon::now()->format(Arr::get([
             'daily' => 'Ymd',
             'monthly' => 'Ym',
             'yearly' => 'Y',
-        ], $this->logRotate, 'Ymd'));
+        ], $this->logrotateType, 'Ymd'));
 
         $schema = $this->getConnection()->getSchemaBuilder();
 
-        if ($schema->hasTable($logRotateTable) === false) {
-            $schema->create($logRotateTable, function (Blueprint $table) {
-                $this->createLogRotateTable($table);
+        if ($schema->hasTable($logrotateTable) === false) {
+            $schema->create($logrotateTable, function (Blueprint $table) {
+                $this->LogrotateTableSchema($table);
             });
         }
 
-        return $logRotateTable;
+        return $logrotateTable;
     }
 
     /**
@@ -51,5 +51,5 @@ trait Logrotate
      * @param Blueprint $table
      * @return void
      */
-    abstract protected function createLogRotateTable(Blueprint $table);
+    abstract protected function logrotateTableSchema(Blueprint $table);
 }
