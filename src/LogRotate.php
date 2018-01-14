@@ -3,10 +3,13 @@
 namespace Recca0120\EloquentLogRotate;
 
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Database\Schema\Blueprint;
 
 trait LogRotate
 {
+    protected $logRotate = 'monthly';
+
     /**
      * Get the table associated with the model.
      *
@@ -25,8 +28,11 @@ trait LogRotate
      */
     protected function getLogRotateTable($table)
     {
-        $now = Carbon::now();
-        $logRotateTable = $table.'_'.$now->format('Ymd');
+        $logRotateTable = $table.'_'.Carbon::now()->format(Arr::get([
+            'daily' => 'Ymd',
+            'monthly' => 'Ym',
+            'yearly' => 'Y',
+        ], $this->logRotate, 'Ymd'));
 
         $schema = $this->getConnection()->getSchemaBuilder();
 
