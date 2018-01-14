@@ -1,5 +1,5 @@
 {
-    "name": "recca0120/eloquent-log-rotate",
+    "name": "recca0120/eloquent-logrotate",
     "description": "",
     "keywords": ["laravel", "eloquent", "model", "logrotate", "rotate", "log"],
     "license": "MIT",
@@ -20,12 +20,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Recca0120\\EloquentLogRotate\\": "src/"
+            "Recca0120\\EloquentLogrotate\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Recca0120\\EloquentLogRotate\\Tests\\": "tests/"
+            "Recca0120\\EloquentLogrotate\\Tests\\": "tests/"
         }
     },
     "config": {

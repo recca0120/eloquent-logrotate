@@ -1,15 +1,15 @@
 <?php
 
-namespace Recca0120\LaravelTracy\Tests;
+namespace Recca0120\EloquentLogrotate\Tests;
 
 use Mockery as m;
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 use Illuminate\Database\Eloquent\Model;
-use Recca0120\EloquentLogRotate\LogRotate;
+use Recca0120\EloquentLogrotate\Logrotate;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-class LogRotateTest extends TestCase
+class LogrotateTest extends TestCase
 {
     private $capsule;
 
@@ -31,12 +31,12 @@ class LogRotateTest extends TestCase
         m::close();
     }
 
-    public function testYearlyLogRotate()
+    public function testYearlyLogrotate()
     {
         $now = Carbon::now();
         $log = new YearlyLog();
-        $logRotateTable = $log->getTable();
-        $this->assertSame('yearly_logs_'.$now->format('Y'), $logRotateTable);
+        $logrotateTable = $log->getTable();
+        $this->assertSame('yearly_logs_'.$now->format('Y'), $logrotateTable);
         $this->assertSame([
             'id',
             'name',
@@ -44,15 +44,15 @@ class LogRotateTest extends TestCase
             'password',
             'created_at',
             'updated_at',
-        ], Capsule::schema()->getColumnListing($logRotateTable));
+        ], Capsule::schema()->getColumnListing($logrotateTable));
     }
 
-    public function testMonthlyLogRotate()
+    public function testMonthlyLogrotate()
     {
         $now = Carbon::now();
         $log = new MonthlyLog();
-        $logRotateTable = $log->getTable();
-        $this->assertSame('monthly_logs_'.$now->format('Ym'), $logRotateTable);
+        $logrotateTable = $log->getTable();
+        $this->assertSame('monthly_logs_'.$now->format('Ym'), $logrotateTable);
         $this->assertSame([
             'id',
             'name',
@@ -60,15 +60,15 @@ class LogRotateTest extends TestCase
             'password',
             'created_at',
             'updated_at',
-        ], Capsule::schema()->getColumnListing($logRotateTable));
+        ], Capsule::schema()->getColumnListing($logrotateTable));
     }
 
-    public function testDailyLogRotate()
+    public function testDailyLogrotate()
     {
         $now = Carbon::now();
         $log = new DailyLog();
-        $logRotateTable = $log->getTable();
-        $this->assertSame('daily_logs_'.$now->format('Ymd'), $logRotateTable);
+        $logrotateTable = $log->getTable();
+        $this->assertSame('daily_logs_'.$now->format('Ymd'), $logrotateTable);
         $this->assertSame([
             'id',
             'name',
@@ -76,17 +76,17 @@ class LogRotateTest extends TestCase
             'password',
             'created_at',
             'updated_at',
-        ], Capsule::schema()->getColumnListing($logRotateTable));
+        ], Capsule::schema()->getColumnListing($logrotateTable));
     }
 }
 
 class YearlyLog extends Model
 {
-    use LogRotate;
+    use Logrotate;
 
-    protected $logRotate = 'yearly';
+    protected $logrotate = 'yearly';
 
-    protected function createLogRotateTable($table)
+    protected function createLogrotateTable($table)
     {
         $table->increments('id');
         $table->string('name');
@@ -98,11 +98,11 @@ class YearlyLog extends Model
 
 class MonthlyLog extends Model
 {
-    use LogRotate;
+    use Logrotate;
 
-    protected $logRotate = 'monthly';
+    protected $logrotate = 'monthly';
 
-    protected function createLogRotateTable($table)
+    protected function createLogrotateTable($table)
     {
         $table->increments('id');
         $table->string('name');
@@ -114,11 +114,11 @@ class MonthlyLog extends Model
 
 class DailyLog extends Model
 {
-    use LogRotate;
+    use Logrotate;
 
-    protected $logRotate = 'daily';
+    protected $logrotate = 'daily';
 
-    protected function createLogRotateTable($table)
+    protected function createLogrotateTable($table)
     {
         $table->increments('id');
         $table->string('name');

@@ -1,12 +1,12 @@
 <?php
 
-namespace Recca0120\EloquentLogRotate;
+namespace Recca0120\EloquentLogrotate;
 
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Schema\Blueprint;
 
-trait LogRotate
+trait Logrotate
 {
     protected $logRotate = 'monthly';
 
