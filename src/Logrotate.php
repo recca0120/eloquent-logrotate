@@ -24,14 +24,26 @@ trait Logrotate
      * @param string $table
      * @return string
      */
-    protected function createLogrotateTable($table)
+    protected function getLogrotateTable($table)
     {
         $logrotateType = property_exists($this, 'logrotateType') === true ? $this->logrotateType : 'monthly';
-        $logrotateTable = $table.'_'.Carbon::now()->format(Arr::get([
+
+        return $table.'_'.Carbon::now()->format(Arr::get([
             'daily' => 'Ymd',
             'monthly' => 'Ym',
             'yearly' => 'Y',
         ], $logrotateType, 'Ymd'));
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param string $table
+     * @return string
+     */
+    protected function createLogrotateTable($table)
+    {
+        $logrotateTable = $this->getLogrotateTable($table);
 
         $schema = $this->getConnection()->getSchemaBuilder();
         if ($schema->hasTable($logrotateTable) === false) {
