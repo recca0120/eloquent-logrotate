@@ -15,8 +15,8 @@
     },
     "require-dev": {
         "mockery/mockery": "~0.9.4",
-        "phpunit/phpunit": "~4.8|~5.4|~6.1",
-        "nesbot/carbon": "~1.20"
+        "nesbot/carbon": "~1.20",
+        "phpunit/phpunit": "~4.8|~5.4|~6.1"
     },
     "autoload": {
         "psr-4": {
@@ -32,12 +32,5 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Recca0120\\LaravelTracy\\LaravelTracyServiceProvider"
-            ]
-        }
     }
 }

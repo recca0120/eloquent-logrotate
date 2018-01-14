@@ -36,7 +36,7 @@ trait Logrotate
         $schema = $this->getConnection()->getSchemaBuilder();
         if ($schema->hasTable($logrotateTable) === false) {
             $schema->create($logrotateTable, function (Blueprint $table) {
-                $this->LogrotateTableSchema($table);
+                $this->logrotateTableSchema($table);
             });
         }
 
