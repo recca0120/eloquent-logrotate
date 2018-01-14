@@ -15,7 +15,7 @@ trait Logrotate
      */
     public function getTable()
     {
-        return $this->getLogrotateTable(parent::getTable());
+        return $this->createLogrotateTable(parent::getTable());
     }
 
     /**
@@ -24,7 +24,7 @@ trait Logrotate
      * @param string $table
      * @return string
      */
-    protected function getLogrotateTable($table)
+    protected function createLogrotateTable($table)
     {
         $logrotateType = property_exists($this, 'logrotateType') === true ? $this->logrotateType : 'monthly';
         $logrotateTable = $table.'_'.Carbon::now()->format(Arr::get([
