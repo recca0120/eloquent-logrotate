@@ -8,10 +8,13 @@ use PHPUnit\Framework\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Recca0120\EloquentLogrotate\Logrotate;
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\ConnectionResolverInterface;
 
 class LogrotateTest extends TestCase
 {
     private $capsule;
+
+    private $connectionResolver;
 
     protected function setUp()
     {
@@ -126,6 +129,28 @@ class LogrotateTest extends TestCase
             'updated_at',
         ], Capsule::schema()->getColumnListing($logrotateTable));
     }
+
+    public function testCreateTableOnce()
+    {
+        $now = Carbon::now();
+
+        $connectionResolver = m::mock(ConnectionResolverInterface::class);
+        $connectionResolver->shouldReceive('connection->getSchemaBuilder')->andReturn(
+            $schema = m::mock(stdClass::class)
+        );
+        $schema->shouldReceive('hasTable')->once()->andReturn(false);
+        $schema->shouldReceive('create')->once();
+
+        Model::setConnectionResolver($connectionResolver);
+
+        $log = new HourlyLog([], true);
+        $logrotateTable = $log->getTable();
+        $this->assertSame('hourly_logs_'.$now->format('YmdH'), $logrotateTable);
+
+        $log2 = new HourlyLog();
+        $logrotateTable2 = $log2->getTable();
+        $this->assertSame('hourly_logs_'.$now->format('YmdH'), $logrotateTable2);
+    }
 }
 
 class YearlyLog extends Model
@@ -197,6 +222,14 @@ class HourlyLog extends Model
     use Logrotate;
 
     protected $logrotateType = 'hourly';
+
+    public function __construct($attributes = [], $reset = false)
+    {
+        parent::__construct($attributes);
+        if ($reset === true) {
+            static::$logrotateTableCreated = [];
+        }
+    }
 
     protected function logrotateTableSchema($table)
     {
