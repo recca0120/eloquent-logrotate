@@ -54,8 +54,13 @@ trait Logrotate
     protected function createLogrotateTable($table)
     {
         $logrotateTable = $this->getLogrotateTable($table);
+
+        if (isset(static::$logrotateTableCreated[$logrotateTable]) === true) {
+            return $logrotateTable;
+        }
+
         $schema = $this->getConnection()->getSchemaBuilder();
-        if (isset(static::$logrotateTableCreated[$logrotateTable]) === false && $schema->hasTable($logrotateTable) === false) {
+        if ($schema->hasTable($logrotateTable) === false) {
             $schema->create($logrotateTable, function (Blueprint $table) {
                 $this->logrotateTableSchema($table);
             });
