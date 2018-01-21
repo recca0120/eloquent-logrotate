@@ -1,7 +1,7 @@
 {
     "name": "recca0120/eloquent-logrotate",
-    "description": "",
-    "keywords": ["laravel", "eloquent", "model", "logrotate", "rotate", "log"],
+    "description": "laravel eloquent auto create table by daily or weekly or monthly or yearly",
+    "keywords": ["laravel", "eloquent", "model", "logrotate", "rotate", "log", "hourly", "daily", "weekly", "monthly", "yearly"],
     "license": "MIT",
     "authors": [
         {

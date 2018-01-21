@@ -9,6 +9,13 @@ use Illuminate\Database\Schema\Blueprint;
 trait Logrotate
 {
     /**
+     * $logrotateTableCreated.
+     *
+     * @var array
+     */
+    protected static $logrotateTableCreated = [];
+
+    /**
      * Get the table associated with the model.
      *
      * @return string
@@ -29,10 +36,12 @@ trait Logrotate
         $logrotateType = property_exists($this, 'logrotateType') === true ? $this->logrotateType : 'monthly';
 
         return $table.'_'.Carbon::now()->format(Arr::get([
-            'daily' => 'Ymd',
-            'monthly' => 'Ym',
             'yearly' => 'Y',
-        ], $logrotateType, 'Ymd'));
+            'monthly' => 'Ym',
+            'weekly' => 'YW',
+            'daily' => 'Ymd',
+            'hourly' => 'YmdH',
+        ], $logrotateType, 'Ym'));
     }
 
     /**
@@ -46,10 +55,13 @@ trait Logrotate
         $logrotateTable = $this->getLogrotateTable($table);
 
         $schema = $this->getConnection()->getSchemaBuilder();
-        if ($schema->hasTable($logrotateTable) === false) {
+        if (isset(static::$logrotateTableCreated[$logrotateTable])
+
+                                            === false && $schema->hasTable($logrotateTable) === false) {
             $schema->create($logrotateTable, function (Blueprint $table) {
                 $this->logrotateTableSchema($table);
             });
+            static::$logrotateTableCreated[$logrotateTable] = true;
         }
 
         return $logrotateTable;
