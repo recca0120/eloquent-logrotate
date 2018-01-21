@@ -119,7 +119,7 @@ class LogrotateTest extends TestCase
         $now = Carbon::now();
         $log = new CustomFormatWeeklyLog();
         $logrotateTable = $log->getTable();
-        $this->assertSame('custom_format_weekly_logs_'.$now->format('Y-W'), $logrotateTable);
+        $this->assertSame('custom_format_weekly_logs_'.$now->format('Y_W'), $logrotateTable);
         $this->assertSame([
             'id',
             'name',
@@ -248,7 +248,7 @@ class CustomFormatWeeklyLog extends Model
     protected $logrotateType = 'weekly';
 
     protected $logrotateTypeFormat = [
-        'weekly' => 'Y-W',
+        'weekly' => 'Y_W',
     ];
 
     protected function logrotateTableSchema($table)
