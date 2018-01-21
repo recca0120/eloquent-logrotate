@@ -110,6 +110,22 @@ class LogrotateTest extends TestCase
             'updated_at',
         ], Capsule::schema()->getColumnListing($logrotateTable));
     }
+
+    public function testCustomFormatWeeklyLogrotate()
+    {
+        $now = Carbon::now();
+        $log = new CustomFormatWeeklyLog();
+        $logrotateTable = $log->getTable();
+        $this->assertSame('custom_format_weekly_logs_'.$now->format('Y-W'), $logrotateTable);
+        $this->assertSame([
+            'id',
+            'name',
+            'email',
+            'password',
+            'created_at',
+            'updated_at',
+        ], Capsule::schema()->getColumnListing($logrotateTable));
+    }
 }
 
 class YearlyLog extends Model
@@ -192,3 +208,22 @@ class HourlyLog extends Model
     }
 }
 
+class CustomFormatWeeklyLog extends Model
+{
+    use Logrotate;
+
+    protected $logrotateType = 'weekly';
+
+    protected $logrotateTypeFormat = [
+        'weekly' => 'Y-W',
+    ];
+
+    protected function logrotateTableSchema($table)
+    {
+        $table->increments('id');
+        $table->string('name');
+        $table->string('email')->unique();
+        $table->string('password');
+        $table->timestamps();
+    }
+}
