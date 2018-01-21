@@ -34,14 +34,15 @@ trait Logrotate
     protected function getLogrotateTable($table)
     {
         $logrotateType = property_exists($this, 'logrotateType') === true ? $this->logrotateType : 'monthly';
-
-        return $table.'_'.Carbon::now()->format(Arr::get([
+        $logrotateTypeFormat = property_exists($this, 'logrotateTypeFormat') === true ? $this->logrotateTypeFormat : [
             'yearly' => 'Y',
             'monthly' => 'Ym',
             'weekly' => 'YW',
             'daily' => 'Ymd',
             'hourly' => 'YmdH',
-        ], $logrotateType, 'Ym'));
+        ];
+
+        return $table.'_'.Carbon::now()->format(Arr::get($logrotateTypeFormat, $logrotateType, 'Ym'));
     }
 
     /**
@@ -53,11 +54,8 @@ trait Logrotate
     protected function createLogrotateTable($table)
     {
         $logrotateTable = $this->getLogrotateTable($table);
-
         $schema = $this->getConnection()->getSchemaBuilder();
-        if (isset(static::$logrotateTableCreated[$logrotateTable])
-
-                                            === false && $schema->hasTable($logrotateTable) === false) {
+        if (isset(static::$logrotateTableCreated[$logrotateTable]) === false && $schema->hasTable($logrotateTable) === false) {
             $schema->create($logrotateTable, function (Blueprint $table) {
                 $this->logrotateTableSchema($table);
             });
